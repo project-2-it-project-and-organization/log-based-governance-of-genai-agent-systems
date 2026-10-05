@@ -4,42 +4,37 @@ on:
   pull_request:
     branches:
       - main
-      # Run only when 
+      # Run only when pyhton source code have been changed
     paths:
       - 'src/**'
       - 'tests/**'
 
 jobs:
   linter:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
+    runs-on: ubuntu-latest        
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.10'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8
-    - name: Analysing the code with flake8
-      run: |
-        flake8 $(git ls-files '*.py')
+        pip install ruff
+    - name: Lint the code with Ruff
+      run: ruff check --output-format=github --target-version=py310
+    - name: Check code formatting with Ruff
+      run: ruff format --diff --target-version=py310
   unit-test:
     needs: linter
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.10'
     - name: Install dependencies
       run: |
        python -m pip install --upgrade pip

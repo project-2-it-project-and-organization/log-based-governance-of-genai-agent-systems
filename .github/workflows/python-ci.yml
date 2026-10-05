@@ -9,7 +9,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
-
+      - '.github/**'
 jobs:
   linter:
     runs-on: ubuntu-latest        

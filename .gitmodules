@@ -1,0 +1,3 @@
+[submodule "dependencies/governancekit"]
+	path = dependencies/governancekit
+	url = https://github.com/filipnaudot/governancekit.git

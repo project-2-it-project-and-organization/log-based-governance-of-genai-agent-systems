@@ -2,7 +2,11 @@ import pytest
 
 
 def test_addition():
-    assert 10 + 5 == 15 
+    assert 10 + 5 == 15
+
+
+def test_addition2():
+    assert 10 + 3 == 13
 
 
 def test_subtraction():

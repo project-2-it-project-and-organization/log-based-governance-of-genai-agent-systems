@@ -1,24 +1,15 @@
-import asyncio
-from collections.abc import AsyncIterator
-from typing import TypedDict, Any
+from typing import Any
 
 import nemo_relay
-
 import requests
-
 from governancekit.engine import (
-    MonitorRegistry, 
-    Event,             
-    Decision,          
-    TraceMonitor,      
-    MPDeclareModel,    
-    parse_decl_text,   
+    MonitorRegistry,
 )
 
 BASE_URL = "http://localhost:8000"
 
 # The conditional execution guardrail plugin
-class policy_checker_plugin():
+class policy_checker_plugin:
     # https://docs.nvidia.com/nemo/relay/build-plugins/fundamentals/plugin-shape
 
     # Needs to return diagnostics. Verify input. Should not do anything lasting

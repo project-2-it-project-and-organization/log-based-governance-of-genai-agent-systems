@@ -1,11 +1,9 @@
 import asyncio
-from collections.abc import AsyncIterator
-from typing import TypedDict
-
-from plugin import policy_checker_plugin
 
 import nemo_relay
 import nemo_relay.plugin
+
+from plugin import policy_checker_plugin
 
 # Executes two tool calls described in governancekit model. view account which should fail.
 # And verify idendity which should succeed. These are the first two calls in the scenario listed in governancekit/scenarios/demo.sh

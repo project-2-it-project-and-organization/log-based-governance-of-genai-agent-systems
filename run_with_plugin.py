@@ -10,38 +10,51 @@ from plugin import policy_checker_plugin
 
 # All tools are dummy
 
+
 # Tool verify_idendity
 async def verify_idendity(args) -> nemo_relay.ToolExecutionResult:
     print("Verifing idendity!")
-    return nemo_relay.ToolExecutionResult({"status": "ok"}) 
+    return nemo_relay.ToolExecutionResult({"status": "ok"})
+
 
 # Tool view_account
 async def view_account() -> nemo_relay.ToolExecutionResult:
     print("Viewing the account!")
-    return nemo_relay.ToolExecutionResult({"status": "ok"}) 
+    return nemo_relay.ToolExecutionResult({"status": "ok"})
+
 
 async def main() -> None:
 
     nemo_relay.plugin.register("policy_checker_plugin", policy_checker_plugin())
     config = nemo_relay.plugin.PluginConfig()
-    nemo_relay.plugin.validate(config, "plugin.toml") # Should be fine without explicit file path also
+    nemo_relay.plugin.validate(
+        config, "plugin.toml"
+    )  # Should be fine without explicit file path also
     # Runs the register function in the plugin.
     activation = await nemo_relay.plugin.initialize(config, "plugin.toml")
     try:
         # creates a scope called demo-agent. This acts as the closest thing to an agent in this loop
         with nemo_relay.scope.scope("demo-agent", nemo_relay.ScopeType.Agent) as handle:
             try:
-                await nemo_relay.tools.execute("view_account", {}, view_account, handle=handle)
+                await nemo_relay.tools.execute(
+                    "view_account", {}, view_account, handle=handle
+                )
             except RuntimeError as e:
                 print(f"RUNTIME ERROR for tool call 1: {e}")
             try:
-                await nemo_relay.tools.execute("verify_idendity", {"method": "bankid"}, verify_idendity, handle=handle)
+                await nemo_relay.tools.execute(
+                    "verify_idendity",
+                    {"method": "bankid"},
+                    verify_idendity,
+                    handle=handle,
+                )
             except RuntimeError as e:
                 print(f"RUNTIME ERROR for tool call 2: {e}")
 
             await nemo_relay.subscribers.flush_async()
     # Close the plugin
-    finally: await activation.close()
+    finally:
+        await activation.close()
 
 
 asyncio.run(main())

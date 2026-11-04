@@ -1,0 +1,5 @@
+version = 1
+
+[[components]]
+kind = "policy_checker_plugin"       # must match the name you registered
+enabled = true

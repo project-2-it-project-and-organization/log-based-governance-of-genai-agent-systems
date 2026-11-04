@@ -26,18 +26,18 @@ async def main() -> None:
 
     nemo_relay.plugin.register("policy_checker_plugin", policy_checker_plugin())
     config = nemo_relay.plugin.PluginConfig()
-    diagnostics = nemo_relay.plugin.validate(config, "plugin.toml") # Should be fine without explicit file path also
+    nemo_relay.plugin.validate(config, "plugin.toml") # Should be fine without explicit file path also
     # Runs the register function in the plugin.
     activation = await nemo_relay.plugin.initialize(config, "plugin.toml")
     try:
         # creates a scope called demo-agent. This acts as the closest thing to an agent in this loop
         with nemo_relay.scope.scope("demo-agent", nemo_relay.ScopeType.Agent) as handle:
             try:
-                tool_result = await nemo_relay.tools.execute("view_account", {}, view_account, handle=handle)
+                await nemo_relay.tools.execute("view_account", {}, view_account, handle=handle)
             except RuntimeError as e:
                 print(f"RUNTIME ERROR for tool call 1: {e}")
             try:
-                tool_result_scam = await nemo_relay.tools.execute("verify_idendity", {"method": "bankid"}, verify_idendity, handle=handle)
+                await nemo_relay.tools.execute("verify_idendity", {"method": "bankid"}, verify_idendity, handle=handle)
             except RuntimeError as e:
                 print(f"RUNTIME ERROR for tool call 2: {e}")
 
